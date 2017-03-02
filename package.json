@@ -1,0 +1,15 @@
+{
+  "name": "laravel-vue",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "P. Dayvson",
+  "description": "",
+  "dependencies": {
+    "vue": "1"
+  }
+}
