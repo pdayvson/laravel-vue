@@ -1,15 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<meta charset="utf-8">
-	<title>Laravel Vue.js</title>
+    <meta charset="utf-8">
+    <title>Laravel Vue.js</title>
+    <style type="text/css">
+        .pago, .verde {
+            color: green;
+        }
+
+        .nao-pago, .vermelhor {
+            color: red;
+        }
+
+        .cinza {
+            color: gray;
+        }
+
+        .minha-classe {
+            background-color: lightgray;
+        }
+    </style>
 </head>
-<body>
-	<div id="app">
-		<h1>Olá, mundo!</h1>
-		{{ message }}
-	</div>
-	<script type="text/javascript" src="node_modules/vue/dist/vue.min.js"></script>
-	<script type="text/javascript" src="js/main.js"></script>
+<body id="app">
+    <h1>{{ title }}</h1>
+    <div v-html="status | statusColor"></div>
+
+    <ul>
+        <li v-for="m in menus">
+            <a href="javascript:void(0);" @click="showView(m.id)">{{ m.name }}</a>
+        </li>
+    </ul>
+
+    <div v-if="activeView == 0">
+        <table border="1" cellpadding="10">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Nome</th>
+                <th>Vencimento</th>
+                <th>Valor</th>
+                <th>Paga?</th>
+                <th>Ações</th>
+            </tr>
+            <tbody>
+            <tr v-for="(index, b) in bills">
+                <td>{{ index + 1 }}</td>
+                <td>{{ b.name }}</td>
+                <td>{{ b.date_due }}</td>
+                <td>{{ b.value | currency 'R$ ' 2 }}</td>
+                <td class="minha-classe" :class="{'pago': b.done, 'nao-pago': !b.done}">
+                    {{ b.done | doneLabel }}
+                </td>
+                <td>
+                    <a href="javascript:void(0);" @click.prevent="loadBill(b)">Editar</a> |
+                    <a href="javascript:void(0);" @click.prevent="removeBill(index)">Apagar</a> |
+                    <button type="button" v-if="b.done == 0" @click="alternateStatus(b)">Marcar como paga</button>
+                    <button type="button" v-else @click="alternateStatus(b)">Marcar como não paga</button>
+                </td>
+            </tr>
+            </tbody>
+            </thead>
+        </table>
+    </div>
+    <div v-if="activeView == 1">
+        <form action="?" name="form" @submit.prevent="submit">
+            <label>
+                Nome: <br>
+                <select v-model="bill.name">
+                    <option v-for="n in names" :value="n">{{ n }}</option>
+                </select>
+            </label>
+            <br><br>
+            <label>
+                Vencimento: <br>
+                <input type="text" name="vencimento" v-model="bill.date_due">
+            </label>
+            <br><br>
+            <label>
+                Valor: <br>
+                <input type="text" v-model="bill.value">
+            </label>
+            <br><br>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script type="text/javascript" src="node_modules/vue/dist/vue.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>
