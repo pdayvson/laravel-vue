@@ -10,6 +10,7 @@
   "author": "P. Dayvson",
   "description": "",
   "dependencies": {
-    "vue": "1"
+    "vue": "1",
+    "vue-router": "^0.7.13"
   }
 }
